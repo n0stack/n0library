@@ -8,7 +8,8 @@ import sys
 
 class LogInit():
 
-    def __init__(self, path, name, level, stdout, fileout) -> None:
+    def __init__(self, filepath, filename, level, stdout, fileout):
+        # type: (str, str, str, bool, bool) -> None
         """
         Args:
             path (str): fileout path
@@ -18,14 +19,12 @@ class LogInit():
             fileout(bool): True or False
 
         Example:
-            >>> from n0library.utils.n0corelog import LogInit
+            >>> from n0library.n0corelog import LogInit
             >>> log = LogInit("./log/test/", "test.log", "debug", True, True).logger
             >>> log.info("tester")
         """
         self.logger = getLogger(__name__)
         times = str(datetime.now().strftime("%Y:%m:%d-%H:%M:%S"))
-        filepath = str(path)
-        filename = str(name)
         host = socket.gethostname()
         log_fmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "
         levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}
