@@ -6,7 +6,7 @@ import socket
 import sys
 
 
-class LogInit(object):
+class L0gger(object):
 
     def __init__(self, stdout, fileout, **kwargs):
         # type: (bool, bool, **str) -> None
