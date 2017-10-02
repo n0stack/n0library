@@ -7,8 +7,8 @@ import sys
 
 
 class Logger(object):
-    log_fmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "
-    levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}
+    Logfmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "
+    Levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}
 
     def __init__(self, stdout, fileout, name='root', **kwargs):
         # type: (str, bool, bool, **str) -> None
@@ -31,13 +31,13 @@ class Logger(object):
 
         if(stdout):
             stdout_handler = SH(sys.stdout)
-            stdout_handler.setFormatter(Formatter(Logger.log_fmt))
-            stdout_handler.setLevel(Logger.levels[kwargs["level"]])
+            stdout_handler.setFormatter(Formatter(Logger.Logfmt))
+            stdout_handler.setLevel(Logger.Levels[kwargs["level"]])
             self.logger.addHandler(stdout_handler)
         if(fileout):
             file_handler = RFH(kwargs["filepath"] + host + "-" + times + "-" + kwargs["filename"], 'a+', 100000, 100)
-            file_handler.setFormatter(Formatter(Logger.log_fmt))
-            file_handler.level = Logger.levels[kwargs["level"]]
+            file_handler.setFormatter(Formatter(Logger.Logfmt))
+            file_handler.level = Logger.Levels[kwargs["level"]]
             self.logger.addHandler(file_handler)
-        self.logger.setLevel(Logger.levels[kwargs["level"]])
+        self.logger.setLevel(Logger.Levels[kwargs["level"]])
         self.logger.debug('Init')
