@@ -23,7 +23,7 @@ class Logger():
 
         Example:
             >>> from n0library.logger import Logger
-            >>> log = Logger('test', True, filepath="./log/test/", filename="test.log", level="debug")
+            >>> log = Logger("test", True, filepath="./log/test/", filename="test.log", level="debug")
             >>> log.info("tester")
         """
         self.logger = getLogger(name)  # type: LoggerType
@@ -37,13 +37,13 @@ class Logger():
             self.logger.addHandler(stdout_handler)
 
         if("filepath" in kwargs):
-            file_handler = RFH(kwargs["filepath"] + host + "-" + times + "-" + kwargs["filename"], 'a+', 100000, 100)  # type: RFH
+            file_handler = RFH(f'{kwargs["filepath"]}{host}-{times}-{kwargs["filename"]}', 'a+', 100000, 100)  # type: RFH
             file_handler.setFormatter(Formatter(Logger.Logfmt))
             file_handler.level = Logger.Levels[level]
             self.logger.addHandler(file_handler)
 
         self.logger.setLevel(Logger.Levels[level])
-        self.logger.debug('Init')
+        self.logger.debug("Init")
 
     def info(self, msg, extra=None):
         # type: (str, Dict[str, Any]) -> None
