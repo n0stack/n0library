@@ -35,11 +35,13 @@ class Logger():
             stdout_handler.setFormatter(Formatter(Logger.Logfmt))
             stdout_handler.setLevel(Logger.Levels[level])
             self.logger.addHandler(stdout_handler)
+
         if("filepath" in kwargs):
             file_handler = RFH(kwargs["filepath"] + host + "-" + times + "-" + kwargs["filename"], 'a+', 100000, 100)  # type: RFH
             file_handler.setFormatter(Formatter(Logger.Logfmt))
             file_handler.level = Logger.Levels[level]
             self.logger.addHandler(file_handler)
+
         self.logger.setLevel(Logger.Levels[level])
         self.logger.debug('Init')
 
