@@ -19,7 +19,7 @@ class L0gger(object):
             level(str): "info" or "warning" or "error" or "debug"
 
         Example:
-            >>> from n0library.n0corelog import LogInit
+            >>> from n0library.n0corelog import L0gger
             >>> log = LogInit(True, True, filepath="./log/test/", filename="test.log", level="debug").logger
             >>> log.info("tester")
         """
