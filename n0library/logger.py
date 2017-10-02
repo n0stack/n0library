@@ -6,10 +6,12 @@ import socket
 import sys
 
 
-class L0gger(object):
+class Logger(object):
+    log_fmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "
+    levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}
 
-    def __init__(self, stdout, fileout, **kwargs):
-        # type: (bool, bool, **str) -> None
+    def __init__(self, stdout, fileout, name='root', **kwargs):
+        # type: (str, bool, bool, **str) -> None
         """
         Args:
             stdout(bool): True or False
@@ -19,24 +21,23 @@ class L0gger(object):
             level(str): "info" or "warning" or "error" or "debug"
 
         Example:
-            >>> from n0library.n0corelog import L0gger
-            >>> log = LogInit(True, True, filepath="./log/test/", filename="test.log", level="debug").logger
+            >>> from n0library.logger import Logger
+            >>> log = LogInit(True, True, 'test', filepath="./log/test/", filename="test.log", level="debug").logger
             >>> log.info("tester")
         """
-        self.logger = getLogger(__name__)
+        self.logger = getLogger(name)
         times = str(datetime.now().strftime("%Y:%m:%d-%H:%M:%S"))
         host = socket.gethostname()
-        log_fmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "
-        levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}
+
         if(stdout):
             stdout_handler = SH(sys.stdout)
-            stdout_handler.setFormatter(Formatter(log_fmt))
-            stdout_handler.setLevel(levels[kwargs["level"]])
+            stdout_handler.setFormatter(Formatter(Logger.log_fmt))
+            stdout_handler.setLevel(Logger.levels[kwargs["level"]])
             self.logger.addHandler(stdout_handler)
         if(fileout):
             file_handler = RFH(kwargs["filepath"] + host + "-" + times + "-" + kwargs["filename"], 'a+', 100000, 100)
-            file_handler.setFormatter(Formatter(log_fmt))
-            file_handler.level = levels[kwargs["level"]]
+            file_handler.setFormatter(Formatter(Logger.log_fmt))
+            file_handler.level = Logger.levels[kwargs["level"]]
             self.logger.addHandler(file_handler)
-        self.logger.setLevel(levels[kwargs["level"]])
+        self.logger.setLevel(Logger.levels[kwargs["level"]])
         self.logger.debug('Init')

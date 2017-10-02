@@ -5,5 +5,5 @@ setup(
     author='yatuhashi kei',
     author_email='keyansuiya@gmail.com',
     version='1.0.0',
-    py_modules=['n0library/n0corelog'],
+    py_modules=['n0library/logger'],
 )
