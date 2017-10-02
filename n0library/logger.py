@@ -11,7 +11,7 @@ class Logger():
     Logfmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
     Levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
-    def __init__(self, name='', stdout=False, level="debug", **kwargs):
+    def __init__(self, name='root', stdout=False, level="debug", **kwargs):
         # type: (str, bool, str, **str) -> None
         """
         Args:
