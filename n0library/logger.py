@@ -22,7 +22,7 @@ class Logger(object):
 
         Example:
             >>> from n0library.logger import Logger
-            >>> log = LogInit(True, True, 'test', filepath="./log/test/", filename="test.log", level="debug").logger
+            >>> log = Logger(True, True, 'test', filepath="./log/test/", filename="test.log", level="debug").logger
             >>> log.info("tester")
         """
         self.logger = getLogger(name)
