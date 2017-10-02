@@ -11,7 +11,7 @@ class Logger():
     Logfmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
     Levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
-    def __init__(self, name='root', stdout=False, level="debug", **kwargs):
+    def __init__(self, name, stdout, level="debug", **kwargs):
         # type: (str, bool, str, **str) -> None
         """
         Args:
@@ -23,10 +23,10 @@ class Logger():
 
         Example:
             >>> from n0library.logger import Logger
-            >>> log = Logger("test", True, filepath="./log/test/", filename="test.log", level="debug")
+            >>> log = Logger("test", True, level="debug", filepath="./log/test/", filename="test.log")
             >>> log.info("tester")
         """
-        self.logger = getLogger(name)  # type: LoggerType
+        self.logger = getLogger(str(name))  # type: LoggerType
         times = str(datetime.now().strftime("%Y:%m:%d-%H:%M:%S"))  # type: str
         host = socket.gethostname()  # type: str
 
