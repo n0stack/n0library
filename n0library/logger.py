@@ -11,8 +11,8 @@ class Logger():
     Logfmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
     Levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
-    def __init__(self, name, stdout, level="debug", **kwargs):
-        # type: (str, bool, str, **str) -> None
+    def __init__(self, **kwargs):
+        # type: (**str) -> None
         """
         Args:
             logger(str): logger name
@@ -23,9 +23,29 @@ class Logger():
 
         Example:
             >>> from n0library.logger import Logger
-            >>> log = Logger("test", True, level="debug", filepath="./log/test/", filename="test.log")
+            >>> log = Logger()
+            >>> log.info("tester")
+            - - - - - - - - - - - - - - -  -  -
+            >>> from n0library.logger import Logger
+            >>> log = Logger(name="test", stdout=True, level="debug", filepath="./log/test/", filename="test.log")
             >>> log.info("tester")
         """
+
+        if("stdout" not in kwargs):
+            stdout = True  # type: bool
+        else:
+            stdout = kwargs["stdout"]  # type: bool
+
+        if("level" not in kwargs):
+            level = "debug"  # type: str
+        else:
+            level = kwargs["level"]  # type: str
+
+        if("name" not in kwargs):
+            name = ""  # type: str
+        else:
+            name = kwargs["name"]  # type: str
+
         self.logger = getLogger(str(name))  # type: LoggerType
         times = str(datetime.now().strftime("%Y:%m:%d-%H:%M:%S"))  # type: str
         host = socket.gethostname()  # type: str
@@ -36,14 +56,13 @@ class Logger():
             stdout_handler.setLevel(Logger.Levels[level])
             self.logger.addHandler(stdout_handler)
 
-        if("filepath" in kwargs):
+        if("filepath" in kwargs and "filename" in kwargs):
             file_handler = RFH(f'{kwargs["filepath"]}{host}-{times}-{kwargs["filename"]}', 'a+', 100000, 100)  # type: RFH
             file_handler.setFormatter(Formatter(Logger.Logfmt))
             file_handler.level = Logger.Levels[level]
             self.logger.addHandler(file_handler)
 
         self.logger.setLevel(Logger.Levels[level])
-        self.logger.debug("Init")
 
     def info(self, msg, extra=None):
         # type: (str, Dict[str, Any]) -> None
