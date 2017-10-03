@@ -9,8 +9,8 @@ class Logger():
     LOGFMT = "time:%(asctime)s \t name:[%(name)s] \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
     LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
-    def __init__(self, **kwargs):
-        # type: (**str) -> None
+    def __init__(self, *, name=sys.argv[0], stdout=True, level="debug", filepath=None):
+        # type: (str, bool, str, str) -> None
         """
         Args:
             logger(str): logger name
@@ -28,21 +28,6 @@ class Logger():
             >>> log.info("tester")
         """
 
-        if "stdout" not in kwargs:
-            stdout = True  # type: bool
-        else:
-            stdout = kwargs["stdout"]  # type: bool
-
-        if "level" not in kwargs:
-            level = "debug"  # type: str
-        else:
-            level = kwargs["level"]  # type: str
-
-        if "name" not in kwargs:
-            name = sys.argv[0]  # type: str
-        else:
-            name = kwargs["name"]  # type: str
-
         self.logger = getLogger(str(name))  # type: LoggerType
 
         if stdout:
@@ -51,8 +36,8 @@ class Logger():
             stdout_handler.setLevel(Logger.LEVELS[level])
             self.logger.addHandler(stdout_handler)
 
-        if "filepath" in kwargs:
-            file_handler = RFH(kwargs["filepath"], 'a+', 100000, 100)  # type: RFH
+        if filepath is not None:
+            file_handler = RFH(filepath, 'a+', 100000, 100)  # type: RFH
             file_handler.setFormatter(Formatter(Logger.LOGFMT))
             file_handler.level = Logger.LEVELS[level]
             self.logger.addHandler(file_handler)
