@@ -17,7 +17,6 @@ class Logger():
             stdout(bool): True or False
             level(str): "info" or "warning" or "error" or "debug"
             filepath (str): fileout path
-            filename(str): filename
 
         Example:
             >>> from n0library.logger import Logger
@@ -52,7 +51,7 @@ class Logger():
             stdout_handler.setLevel(Logger.LEVELS[level])
             self.logger.addHandler(stdout_handler)
 
-        if "filepath" in kwargs and "filename" in kwargs:
+        if "filepath" in kwargs:
             file_handler = RFH(kwargs["filepath"], 'a+', 100000, 100)  # type: RFH
             file_handler.setFormatter(Formatter(Logger.LOGFMT))
             file_handler.level = Logger.LEVELS[level]
