@@ -25,7 +25,7 @@ class Logger():
         >>> log3.info("tester")
     """
 
-    LOGFMT = "time:%(asctime)s \t name:[%(name)s] \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
+    LOGFMT = "time:%(asctime)s \t name:%(name)s \tseverity:%(levelname)s \tmessage:%(message)s  "  # type: str
     LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
     def __init__(self, *, name=sys.argv[0], stdout=None, filepath=None, level=None):
