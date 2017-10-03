@@ -2,14 +2,12 @@ from typing import List, Set, Dict, Tuple, Text, Optional, Any  # NOQA
 from logging import getLogger, INFO, WARNING, ERROR, DEBUG, Formatter, Logger as LoggerType  # NOQA
 from logging.handlers import RotatingFileHandler as RFH
 from logging import StreamHandler as SH
-from datetime import datetime
-import socket
 import sys
 
 
 class Logger():
-    Logfmt = "time:%(asctime)s \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
-    Levels = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
+    LOGFMT = "time:%(asctime)s \t name:[%(name)s] \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
+    LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
     def __init__(self, **kwargs):
         # type: (**str) -> None
@@ -27,42 +25,40 @@ class Logger():
             >>> log.info("tester")
             - - - - - - - - - - - - - - -  -  -
             >>> from n0library.logger import Logger
-            >>> log = Logger(name="test", stdout=True, level="debug", filepath="./log/test/", filename="test.log")
+            >>> log = Logger(name="test", stdout=False, level="debug", filepath="./log/test/test.log")
             >>> log.info("tester")
         """
 
-        if("stdout" not in kwargs):
+        if "stdout" not in kwargs:
             stdout = True  # type: bool
         else:
             stdout = kwargs["stdout"]  # type: bool
 
-        if("level" not in kwargs):
+        if "level" not in kwargs:
             level = "debug"  # type: str
         else:
             level = kwargs["level"]  # type: str
 
-        if("name" not in kwargs):
-            name = ""  # type: str
+        if "name" not in kwargs:
+            name = sys.argv[0]  # type: str
         else:
             name = kwargs["name"]  # type: str
 
         self.logger = getLogger(str(name))  # type: LoggerType
-        times = str(datetime.now().strftime("%Y:%m:%d-%H:%M:%S"))  # type: str
-        host = socket.gethostname()  # type: str
 
-        if(stdout):
+        if stdout:
             stdout_handler = SH(sys.stdout)  # type: SH
-            stdout_handler.setFormatter(Formatter(Logger.Logfmt))
-            stdout_handler.setLevel(Logger.Levels[level])
+            stdout_handler.setFormatter(Formatter(Logger.LOGFMT))
+            stdout_handler.setLevel(Logger.LEVELS[level])
             self.logger.addHandler(stdout_handler)
 
-        if("filepath" in kwargs and "filename" in kwargs):
-            file_handler = RFH(f'{kwargs["filepath"]}{host}-{times}-{kwargs["filename"]}', 'a+', 100000, 100)  # type: RFH
-            file_handler.setFormatter(Formatter(Logger.Logfmt))
-            file_handler.level = Logger.Levels[level]
+        if "filepath" in kwargs and "filename" in kwargs:
+            file_handler = RFH(kwargs["filepath"], 'a+', 100000, 100)  # type: RFH
+            file_handler.setFormatter(Formatter(Logger.LOGFMT))
+            file_handler.level = Logger.LEVELS[level]
             self.logger.addHandler(file_handler)
 
-        self.logger.setLevel(Logger.Levels[level])
+        self.logger.setLevel(Logger.LEVELS[level])
 
     def info(self, msg, extra=None):
         # type: (str, Dict[str, Any]) -> None
