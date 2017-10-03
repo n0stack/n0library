@@ -9,7 +9,7 @@ class Logger():
     LOGFMT = "time:%(asctime)s \t name:[%(name)s] \tseverity:[%(levelname)s] \tmessage:%(message)s  "  # type: str
     LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
-    def __init__(self, *, name=sys.argv[0], stdout=True, level="debug", filepath=None):
+    def __init__(self, *, name=sys.argv[0], stdout=True, level="info", filepath=None):
         # type: (str, bool, str, str) -> None
         """
         Args:
