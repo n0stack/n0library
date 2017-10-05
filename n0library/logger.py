@@ -31,7 +31,7 @@ class Logger():
         time:2017-10-05 01:45:52,066     name:log3      severity:INFO   message:bar
     """
 
-    LOGFMT = "time:%(asctime)s \t name:%(name)s \tseverity:%(levelname)s \tmessage:%(message)s  "  # type: str
+    LOGFMT = "time:%(asctime)s \t name:%(name)s \tseverity:%(levelname)s \tmessage:%(message)s"  # type: str
     LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: Dict[str, int]
 
     def __init__(self,
@@ -39,7 +39,7 @@ class Logger():
                  *,
                  stdout=None,  # type: Optional[bool]
                  filepath=None,  # type: Optional[str]
-                 level=None,  # type: Union[str, None]
+                 level='',  # type: str
                  propagate=False  # type: bool
                  ):
         # type: (...) -> None
