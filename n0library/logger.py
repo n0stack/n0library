@@ -10,7 +10,7 @@ class Logger():
     LEVELS = {"info": INFO, "warning": WARNING, "error": ERROR, "debug": DEBUG}  # type: dict
 
     def __init__(self, *, name=sys.argv[0], stdout=True, level="info", filepath=None):
-        # type: (str, bool, str, str) -> None
+        # type: (str, bool, str, Optional[str]) -> None
         """
         Args:
             logger(str): logger name
@@ -45,17 +45,17 @@ class Logger():
         self.logger.setLevel(Logger.LEVELS[level])
 
     def info(self, msg, extra=None):
-        # type: (str, Dict[str, Any]) -> None
+        # type: (str, Optional[Dict[str, Any]]) -> None
         self.logger.info(msg, extra=extra)
 
     def error(self, msg, extra=None):
-        # type: (str, Dict[str, Any]) -> None
+        # type: (str, Optional[Dict[str, Any]]) -> None
         self.logger.error(msg, extra=extra)
 
     def debug(self, msg, extra=None):
-        # type: (str, Dict[str, Any]) -> None
+        # type: (str, Optional[Dict[str, Any]]) -> None
         self.logger.debug(msg, extra=extra)
 
     def warn(self, msg, extra=None):
-        # type: (str, Dict[str, Any]) -> None
+        # type: (str, Optional[Dict[str, Any]]) -> None
         self.logger.warn(msg, extra=extra)
