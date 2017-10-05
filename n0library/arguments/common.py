@@ -1,11 +1,12 @@
 from argparse import ArgumentParser
-from argparse import Namespace  # NOQA
-from typing import Optional  # NOQA
+from argparse import Namespace, HelpFormatter  # NOQA
+from typing import Optional, Any  # NOQA
+import os
 
 from n0library.logger import Logger
 
 
-class CommonArguments(object):
+class CommonArguments(ArgumentParser):
     """Manage common arguments on n0stack
 
     1. Call get_common_args() before set specific arguments of proccesses
@@ -13,34 +14,25 @@ class CommonArguments(object):
     3. Call common_initialize() after parsed args
 
     Examples:
-        on n0core.cmd.n0core-porter-flat
-
+        on n0core.cmd.n0core-porter-flat like these
         ```
-        ca = CommonArguments()
-        common_args = ca.get_common_args()
-        argparser = ArgumentParser(
-            description="Process of n0stack porter type flat",
-            parents=[common_args]
+        argparser = CommonArguments(
+            description="Process of n0stack porter type flat"
         )  # type: ArgumentParser
         argparser.add_argument("--interface-name",
-                               type=str,
-                               default=None,
-                               help="Set interface name to create br-flat automatically")
+                              type=str,
+                              default=None,
+                              help="Set interface name to create br-flat automatically")
         argparser.add_argument("--bridge-name",
-                               type=str,
-                               default=None,
-                               help="Set bridge name of already exists like br-flat")
-        args = argparser.parse_args()  # type: Namespace
-        ca.common_initialize(args)
+                              type=str,
+                              default=None,
+                              help="Set bridge name of already exists like br-flat")
+        args = argparser.parse_args()
         ```
-
-    ToDo:
-        Think whether using decorator or not.
     """
 
-    @classmethod
-    def get_common_args(cls):
-        # type: () -> ArgumentParser
+    def __init__(self, **kwds):
+        # type: (**Any) -> None
         """Get ArgumentParser setted some common arguments.
 
         - Messaging queue options
@@ -49,33 +41,40 @@ class CommonArguments(object):
         Returns:
             ArgumentParser prepared as one of parents.
         """
-        args = ArgumentParser(add_help=False)
-        args.add_argument("--mq-url",
+        super().__init__(**kwds)
+        self.__initialized = False
+
+        self.add_argument("--mq-url",
                           type=str,
                           default="pulsar://localhost:6650",
                           help="Set messaging queue url (Default: pulsar://localhost:6650)")
-        args.add_argument("--log-no-stdout",
+        self.add_argument("--log-no-stdout",
                           default=False,
                           action="store_true",
                           help="Disable log output for stdout")
-        args.add_argument("--log-no-file",
+        self.add_argument("--log-no-file",
                           default=False,
                           action="store_true",
                           help="Disable log output for file")
-        args.add_argument("--log-filepath",
+        self.add_argument("--log-filepath",
                           type=str,
-                          default="/var/log/n0stack/n0core/porter-flat.log",
-                          help="Set log file path (Default: /var/log/n0stack/n0core/porter-flat.log)")  # NOQA
-        args.add_argument("--log-level",
+                          default="/var/log/n0stack/{}.log".format(os.path.basename(__file__)),
+                          help="Set log file path (Default: /var/log/n0stack/{}.log".format(os.path.basename(__file__)))  # NOQA
+        self.add_argument("--log-level",
                           type=str,
                           choices=Logger.LEVELS,
-                          default="waring",
+                          default="warning",
                           help="Set log level (Default: warning)")
-        return args
 
-    @classmethod
-    def common_initialize(cls, arguments):
-        # type: (Namespace) -> None
+    def parse_args(self, *args, **kwds):
+        # type: (*Any, **Any) -> Namespace
+        self.__args = super().parse_args(*args, **kwds)
+        self.__common_initialize()
+
+        return self.__args
+
+    def __common_initialize(self):
+        # type: () -> None
         """Initilize with common options.
 
         - Initialize root logger
@@ -83,12 +82,17 @@ class CommonArguments(object):
         Args:
             arguments: Arguments parsed by ArgumentParser within CommonParser.
         """
-        if arguments.log_no_file:
+        if self.__initialized:
+            return
+
+        if self.__args.log_no_file:
             filepath = None  # type: Optional[str]
         else:
-            filepath = arguments.log_filepath
+            filepath = self.__args.log_filepath
 
         Logger(name='',
-               level=arguments.log_level,
-               stdout=not(arguments.log_no_stdout),
+               level=self.__args.log_level,
+               stdout=not(self.__args.log_no_stdout),
                filepath=filepath)
+
+        self.__initialized = True
