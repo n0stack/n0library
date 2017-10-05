@@ -1,9 +1,16 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
+
+
+with open('README.md') as f:
+    readme = f.read()
+
 setup(
     name='n0library',
-    description='n0core common library',
+    version='0.0.0',
+    description='n0stack common library',
+    long_description=readme,
+    url='https://github.com/n0stack/n0library',
     author='yatuhashi kei',
     author_email='keyansuiya@gmail.com',
-    version='1.0.0',
-    py_modules=['n0library/logger'],
+    packages=find_packages("n0library")
 )
