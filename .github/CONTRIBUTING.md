@@ -9,7 +9,7 @@
 
 ## About documents
 
-## document
+### document
 
 `/docs` 配下にsphinx形式で可能な限り書くこと
 
