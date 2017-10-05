@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from argparse import Namespace
 from typing import Optional  # NOQA
 
 from n0library.logger import Logger
@@ -39,7 +40,7 @@ class CommonArguments(object):
 
     @classmethod
     def get_common_args(cls):
-        # type: (None) -> ArgumentParser
+        # type: () -> ArgumentParser
         """Get ArgumentParser setted some common arguments.
 
         - Messaging queue options
@@ -48,7 +49,7 @@ class CommonArguments(object):
         Returns:
             ArgumentParser prepared as one of parents.
         """
-        args = ArgumentParser(add_help=False)  # type: ArgumentParser
+        args = ArgumentParser(add_help=False)
         args.add_argument("--mq-url",
                           type=str,
                           default="pulsar://localhost:6650",
@@ -90,4 +91,4 @@ class CommonArguments(object):
         Logger(name='',
                level=arguments.log_level,
                stdout=not(arguments.log_no_stdout),
-               filepath=filepath)  # type: Logger
+               filepath=filepath)
