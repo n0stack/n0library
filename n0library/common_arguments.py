@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from argparse import Namespace
+from argparse import Namespace  # NOQA
 from typing import Optional  # NOQA
 
 from n0library.logger import Logger
