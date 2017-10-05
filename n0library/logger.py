@@ -79,7 +79,7 @@ class Logger():
             self._logger.propagate = propagate
 
     def info(self, msg, extra=None):
-        # type: (str, Optional[Dict[str, str]]) -> None
+        # type: (str, Optional[Dict[str, Any]]) -> None
         self._logger.info(msg, extra=extra)
 
     def error(self, msg, extra=None):
