@@ -79,6 +79,6 @@ class Logger():
         # type: (str, Dict[str, Any]) -> None
         self.logger.debug(msg, extra=extra)
 
-    def warn(self, msg, extra=None):
+    def warning(self, msg, extra=None):
         # type: (str, Dict[str, Any]) -> None
-        self.logger.warn(msg, extra=extra)
+        self.logger.warning(msg, extra=extra)
