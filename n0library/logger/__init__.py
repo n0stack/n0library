@@ -93,3 +93,7 @@ class Logger():
     def warning(self, msg, extra=None):
         # type: (str, Optional[Dict[str, Any]]) -> None
         self._logger.warning(msg, extra=extra)
+
+    def critical(self, msg, extra=None):
+        # type: (str, Optional[Dict[str, Any]]) -> None
+        self._logger.critical(msg, extra=extra)
