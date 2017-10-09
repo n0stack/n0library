@@ -12,5 +12,5 @@ setup(
     url='https://github.com/n0stack/n0library',
     author='yatuhashi kei',
     author_email='keyansuiya@gmail.com',
-    packages=find_packages("n0library")
+    packages=find_packages()
 )
