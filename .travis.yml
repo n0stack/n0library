@@ -11,6 +11,7 @@ install:
 script:
 - flake8 .
 - mypy -p n0library
+- python setup.py install
 
 notifications:
   slack:
