@@ -7,11 +7,11 @@ python:
 install:
 - pip install flake8
 - pip install mypy lxml
-- pip install git+https://github.com/n0stack/n0library.git@develop
 
 script:
 - flake8 .
 - mypy -p n0library
+- python setup.py install
 
 notifications:
   slack:
